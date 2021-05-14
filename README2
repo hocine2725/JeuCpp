@@ -1,0 +1,29 @@
+Pour creer une branche de travail personnel :
+
+git checkout master // Doit etre creer depuis master
+git branch nombranche
+git checkout nombranche // On est sur la branhe avec tous le contenu de master
+	Tu fais tes truc avec :
+	git commit obligatoire à la fin
+
+
+// Comme projet à plusieurs permet de recuperer ce que les autres personnes ont pu faire
+git checkout master // retour sur la master
+git pull // recuperation des changement fait sur la master
+git checkout nombranche // Retour sur branche de travail
+git merge master // mise en commun de master et de nombranche
+git status // Affiche tous les fichier avec des conflits
+
+	Aller dans chaque fichier dans ton editeur pour gerer les conflits
+
+git add *
+git commit -m "Merge de la master"
+
+Dans GitHub :
+
+Aller sur nombranche
+Clique sur Pull request de nombranche vers master
+Creer une pull request 
+Cliquer sur accepter la pull request
+
+
