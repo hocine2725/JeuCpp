@@ -24,6 +24,8 @@ class Jeu
 
     LTexture ArmeTexture;
 
+     LTexture MoneyTexture;
+
     private:
    
 

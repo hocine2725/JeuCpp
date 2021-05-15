@@ -80,13 +80,20 @@ bool Jeu::loadMedia( Tile* tiles[] ,SDL_Renderer* gRenderer,SDL_Rect* gTileClips
 		success = false;	
 	}
 	
+
+	if( !MoneyTexture.loadFromFile( "money.png",gRenderer  ) )
+	{
+		printf( "Failed to load dot texture!\n" );
+		success = false;
+	}
+	
 	if( !gGardeTexture.loadFromFile( "policeman.png",gRenderer  ) )
 	{
 		printf( "Failed to load dot texture!\n" );
 		success = false;
 	}
 
-	if( !ArmeTexture.loadFromFile( "armee.png",gRenderer  ) )
+	if( !ArmeTexture.loadFromFile( "arme.png",gRenderer  ) )
 	{
 		printf( "Failed to load dot texture!\n" );
 		success = false;

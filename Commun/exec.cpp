@@ -2,6 +2,9 @@
 
 #include "Arme.hpp"
 #include "Objet.hpp"
+#include "Argent.hpp"
+
+#include <SDL2/SDL_ttf.h>
 int main( int argc, char* args[] )
 {
     ////////////////////////////////////////////////
@@ -59,7 +62,9 @@ int main( int argc, char* args[] )
 
 			//SDL_Rect* currentClip = &gSpriteClips[0];
 			
-			Arme arme(180,120);
+			Arme arme(200,150);
+
+			Argent money(280,200);		
 
 			//While application is running
 			while( !quit )
@@ -117,13 +122,34 @@ int main( int argc, char* args[] )
 				
 				jeu.gGardeTexture.render(jeu.gRenderer,garde.getMBox().x,garde.getMBox().y,&garde.clip[garde.getFrame()/4][garde.getCurrent_clip()]);
 				jeu.gGardeTexture.render(jeu.gRenderer,garde2.getMBox().x,garde2.getMBox().y,&garde2.clip[garde2.getFrame()/4][garde2.getCurrent_clip()]);
-
-				SDL_Rect armeBox=arme.getBox();
 				
+				
+				SDL_Rect armeBox=arme.getClip();
+				SDL_Rect MoneyBox=money.getClip();
+				
+			
 				jeu.ArmeTexture.render(jeu.gRenderer,arme.getX(),arme.getY(),&armeBox);
-				//std::cout<<dot.getFrame()/4<<std::endl;
-				
-				//dot.render( jeu.gRenderer,jeu.gDotTexture);
+				jeu.MoneyTexture.render(jeu.gRenderer,money.getX(),money.getY(),&MoneyBox);
+					
+				bool rama=joueur.ramasserObjet(arme);
+				if (rama){
+					arme.set();
+				}
+
+				bool rama2=joueur.ramasserObjet(money);
+				if (rama2){
+					money.set();
+				}
+				/*if(joueur.getArmee()){
+						std::cout << "armee"<<std::endl;
+				}*/
+
+				if (arme.ramassee==true){
+					std::cout<<"arme"<<std::endl;
+					arme.set();
+				}
+		
+
 
 				SDL_RenderPresent( jeu.gRenderer );
 				

@@ -4,7 +4,8 @@ Joueur::Joueur(std::string n, int i)
 {
     //Initialise le nom du joueur
     nom = n;
-    
+    armee=false;
+    money=0;
     //Initialise le numero du joueur
     id = i;
 
@@ -108,5 +109,27 @@ void Joueur::deplacement(Tile *tiles[])
             //move back
             mBox.y -= mVelY;
         }
+    }
+}
+
+
+//Return true si l'objet est ramasse
+bool Joueur::ramasserObjet(Objet o){
+    if(this->checkCollision(o.getBox())){
+        if (o.getType()==1){
+            //std::cout<<"arme"<<std::endl;
+            o.ramassee = true;
+            this->armee=true;
+            return true;
+        }
+        else if( o.getType()==2){
+            o.ramassee=true;
+            this->money= 50;
+            return true;
+        }
+        return true;
+    }
+    else{
+        return false;
     }
 }

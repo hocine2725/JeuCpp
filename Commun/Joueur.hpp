@@ -18,7 +18,9 @@ class Joueur : public Personnage
 
 		void deplacement(Tile *tiles[]);
 
+    bool ramasserObjet(Objet o);
 
+    bool getArmee(){return armee;}
 
     //SDL_Rect** getClip(){return clip;} //todo : mettre en protected
     SDL_Rect clip[4][4];
@@ -27,6 +29,10 @@ class Joueur : public Personnage
     protected:
 		//Nom du joueur
         std::string nom;
+
+        bool armee;
+
+        int money;
 
         int id;
         

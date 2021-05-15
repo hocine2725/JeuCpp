@@ -81,14 +81,3 @@ bool Personnage::touchesWall(Tile* tiles[])
     //If no wall tiles were touched
     return false;
 }
-
-//Return true si l'objet est ramasse
-bool Personnage::ramasserObjet(Objet o){
-    if(this->checkCollision(o.getBox())){
-        objet = true;
-        return true;
-    }
-    else{
-        return false;
-    }
-}
