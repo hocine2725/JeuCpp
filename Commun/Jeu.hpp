@@ -26,6 +26,8 @@ class Jeu
 
      LTexture MoneyTexture;
 
+       LTexture BalleTexture;
+
     private:
    
 

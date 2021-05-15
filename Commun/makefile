@@ -1,5 +1,8 @@
-all: Personnage.o Objet.o Joueur.o Garde.o Arme.o Argent.o exec
+all: Personnage.o Objet.o Joueur.o Garde.o Arme.o Argent.o Balle.o exec
 
+
+Balle.o : Balle.cpp Balle.hpp 
+	g++ -g -c -I/usr/include/SDL2 Balle.cpp -lSDL2_image -lSDL2_ttf -lSDL2
 
 Argent.o : Argent.cpp Argent.hpp 
 	g++ -g -c -I/usr/include/SDL2 Argent.cpp -lSDL2_image -lSDL2_ttf -lSDL2
@@ -35,7 +38,7 @@ exec.o: exec.cpp Jeu.hpp
 	g++ -g -c -I/usr/include/SDL2 exec.cpp -lSDL2_image -lSDL2_ttf -lSDL2
 	
 exec: LTexture.o Tile.o Jeu.o Joueur.o Personnage.o Garde.o exec.o Arme.o
-	g++ -o exec LTexture.o Tile.o Jeu.o Joueur.o Personnage.o Garde.o Arme.o Argent.o exec.o  -lSDL2_image -lSDL2_ttf -lSDL2
+	g++ -o exec LTexture.o Tile.o Jeu.o Joueur.o Personnage.o Garde.o Arme.o Argent.o Balle.o exec.o  -lSDL2_image -lSDL2_ttf -lSDL2
 
 
 clean:

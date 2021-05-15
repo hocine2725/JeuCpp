@@ -6,6 +6,8 @@ Joueur::Joueur(std::string n, int i)
     nom = n;
     armee=false;
     money=0;
+
+    my_list.push_back(Balle(200,200)); 
     //Initialise le numero du joueur
     id = i;
 
@@ -43,7 +45,23 @@ Joueur::~Joueur()
     free clip;
 }
 */
+void Joueur::tirer(){
+    //std::list<Balle> my_list = { Balle(23,23) };
+    if(this->armee==true){
+        std::cout<<"tirer"<<std::endl;
+        SDL_Rect BalleBox;
+		Balle b= my_list.at(0);
+					BalleBox=b.getClip();
+                    if(this->current_clip==2){
+                        int a=b.getBox().y-50;
+                       // std::cout<<a<<std::endl;
+                        b.set(b.getBox().x,a);
+                     }
+                    // std::cout<<"after: "<<b.getBox().y<<std::endl;
 
+    }
+
+}
 
 void Joueur::evenement(SDL_Event& e)
 {
@@ -64,6 +82,13 @@ void Joueur::evenement(SDL_Event& e)
             break;
             case SDLK_RIGHT: mVelX += PERSONNAGE_VEL; 
                 current_clip = 1;
+            break;
+            case SDLK_t:
+
+            
+                tirer();
+            
+
             break;
         }
     }

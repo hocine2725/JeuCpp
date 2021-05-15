@@ -36,6 +36,11 @@ class Objet
             clip.h=0;
             oBox.x=250;
         }
+
+        void set(int x,int y){
+                oBox.x=x;
+                oBox.y=y;
+        }
         SDL_Rect getBox(){return oBox;}
         SDL_Rect getClip(){return clip;}
         int getX(){return x;}

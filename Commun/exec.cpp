@@ -123,14 +123,29 @@ int main( int argc, char* args[] )
 				jeu.gGardeTexture.render(jeu.gRenderer,garde.getMBox().x,garde.getMBox().y,&garde.clip[garde.getFrame()/4][garde.getCurrent_clip()]);
 				jeu.gGardeTexture.render(jeu.gRenderer,garde2.getMBox().x,garde2.getMBox().y,&garde2.clip[garde2.getFrame()/4][garde2.getCurrent_clip()]);
 				
+
+
+				/*SDL_Rect BalleBox;
+				Balle b =joueur.my_list.at(0);
+
+				BalleBox=b.getClip();
+
+				std::cout<<"main!"<<b.getBox().y<<std::endl;
+				jeu.BalleTexture.render(jeu.gRenderer,b.getBox().x,b.getBox().y,&BalleBox);*/
+					
 				
+
+				
+				//std::cout<<BalleBox.y<<std::endl;
+
 				SDL_Rect armeBox=arme.getClip();
 				SDL_Rect MoneyBox=money.getClip();
 				
 			
 				jeu.ArmeTexture.render(jeu.gRenderer,arme.getX(),arme.getY(),&armeBox);
 				jeu.MoneyTexture.render(jeu.gRenderer,money.getX(),money.getY(),&MoneyBox);
-					
+			
+				
 				bool rama=joueur.ramasserObjet(arme);
 				if (rama){
 					arme.set();
@@ -139,14 +154,6 @@ int main( int argc, char* args[] )
 				bool rama2=joueur.ramasserObjet(money);
 				if (rama2){
 					money.set();
-				}
-				/*if(joueur.getArmee()){
-						std::cout << "armee"<<std::endl;
-				}*/
-
-				if (arme.ramassee==true){
-					std::cout<<"arme"<<std::endl;
-					arme.set();
 				}
 		
 

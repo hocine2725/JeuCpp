@@ -98,7 +98,13 @@ bool Jeu::loadMedia( Tile* tiles[] ,SDL_Renderer* gRenderer,SDL_Rect* gTileClips
 		printf( "Failed to load dot texture!\n" );
 		success = false;
 	}
+	
 
+	if( !BalleTexture.loadFromFile( "dot.bmp",gRenderer  ) )
+	{
+		printf( "Failed to load dot texture!\n" );
+		success = false;
+	}
 
 
 	//Load tile texture

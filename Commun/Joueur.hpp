@@ -1,15 +1,24 @@
 #ifndef JOUEUR_HPP
 #define JOUEUR_HPP
 
+#include <list>
+
 
 #include "Personnage.hpp"
+#include "Balle.hpp"
+#include <vector>
+using std::vector;
 
 class Joueur : public Personnage
 {
     public:
 		//Constructeur
-    Joueur(std::string n, int i);
 
+
+  
+    vector <Balle> my_list;
+    Joueur(std::string n, int i);
+  
     //Destructeur
     //~Joueur();
         
@@ -21,7 +30,7 @@ class Joueur : public Personnage
     bool ramasserObjet(Objet o);
 
     bool getArmee(){return armee;}
-
+void tirer();
     //SDL_Rect** getClip(){return clip;} //todo : mettre en protected
     SDL_Rect clip[4][4];
 
@@ -30,12 +39,15 @@ class Joueur : public Personnage
 		//Nom du joueur
         std::string nom;
 
+
         bool armee;
 
         int money;
 
         int id;
-        
+
+
+
         //SDL_Rect clip[4][4];
 
 
