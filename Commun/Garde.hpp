@@ -7,6 +7,8 @@
 class Garde : public Personnage
 {
     public:
+
+    bool mort;
 		//Constructeur
     Garde(int v, int posX);
 

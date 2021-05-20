@@ -1,7 +1,7 @@
 #include "Garde.hpp"
 
 Garde::Garde(int v, int posX)
-{
+{   mort=false;
     //Initialise le nom du joueur
     vision = v;
     //Position du garde

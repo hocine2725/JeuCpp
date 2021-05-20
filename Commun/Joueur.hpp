@@ -5,7 +5,7 @@
 
 
 #include "Personnage.hpp"
-#include "Balle.hpp"
+
 #include <vector>
 using std::vector;
 
@@ -14,9 +14,9 @@ class Joueur : public Personnage
     public:
 		//Constructeur
 
-
+  bool tire;
   
-    vector <Balle> my_list;
+
     Joueur(std::string n, int i);
   
     //Destructeur
@@ -30,7 +30,9 @@ class Joueur : public Personnage
     bool ramasserObjet(Objet o);
 
     bool getArmee(){return armee;}
-void tirer();
+
+    void tirer();
+
     //SDL_Rect** getClip(){return clip;} //todo : mettre en protected
     SDL_Rect clip[4][4];
 
@@ -46,7 +48,7 @@ void tirer();
 
         int id;
 
-
+        
 
         //SDL_Rect clip[4][4];
 

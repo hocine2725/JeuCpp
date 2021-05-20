@@ -5,6 +5,54 @@
 #include "Argent.hpp"
 
 #include <SDL2/SDL_ttf.h>
+
+bool Collision( SDL_Rect a, SDL_Rect b )
+{
+    //The sides of the rectangles
+    int leftA, leftB;
+    int rightA, rightB;
+    int topA, topB;
+    int bottomA, bottomB;
+
+    //Calculate the sides of rect A
+    leftA = a.x;
+    rightA = a.x + a.w;
+    topA = a.y;
+    bottomA = a.y + a.h;
+
+    //Calculate the sides of rect B
+    leftB = b.x;
+    rightB = b.x + b.w;
+    topB = b.y;
+    bottomB = b.y + b.h;
+
+    //If any of the sides from A are outside of B
+    if( bottomA <= topB )
+    {
+        return false;
+    }
+
+    if( topA >= bottomB )
+    {
+        return false;
+    }
+
+    if( rightA <= leftB )
+    {
+        return false;
+    }
+
+    if( leftA >= rightB )
+    {
+        return false;
+    }
+
+    //If none of the sides from A are outside B
+    return true;
+}
+
+
+
 int main( int argc, char* args[] )
 {
     ////////////////////////////////////////////////
@@ -43,6 +91,8 @@ int main( int argc, char* args[] )
 
 			//The dot that will be moving around on the screen
 			Joueur joueur("lea", 1);
+
+		
 
 			Garde garde(100, 30);
 			Garde garde2(100, 380);
@@ -119,11 +169,20 @@ int main( int argc, char* args[] )
 				//gSpriteSheetTexture.render(jeu.gRenderer,dot.getMBox().x,dot.getMBox().y,&gSpriteClips[0]);
 
 				jeu.gPersonnageTexture.render(jeu.gRenderer,joueur.getMBox().x,joueur.getMBox().y,&joueur.clip[joueur.getFrame()/4][joueur.getCurrent_clip()]);
+
+				
 				
 				jeu.gGardeTexture.render(jeu.gRenderer,garde.getMBox().x,garde.getMBox().y,&garde.clip[garde.getFrame()/4][garde.getCurrent_clip()]);
 				jeu.gGardeTexture.render(jeu.gRenderer,garde2.getMBox().x,garde2.getMBox().y,&garde2.clip[garde2.getFrame()/4][garde2.getCurrent_clip()]);
 				
+				if(joueur.tire==true){
+					if(Collision(garde.getMBox(),joueur.getMBox())){
+						std::cout<<"poignardé"<<std::endl;
+					}
 
+				}
+
+				
 
 				/*SDL_Rect BalleBox;
 				Balle b =joueur.my_list.at(0);
@@ -173,3 +232,5 @@ int main( int argc, char* args[] )
 
 	return 0;
 }
+
+
