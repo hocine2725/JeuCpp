@@ -155,3 +155,11 @@ bool Joueur::ramasserObjet(Objet o){
         return false;
     }
 }
+
+void Joueur::frameUpdate(){
+
+		if( this->getFrame()/4 >=4 ){
+					 //std::cout<<"zero"<<std::endl;
+					this->setFrame(0);
+				}	
+}

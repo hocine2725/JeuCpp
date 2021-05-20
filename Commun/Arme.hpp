@@ -12,7 +12,7 @@ public:
         this->clip.x = 0;
         this->clip.y = 0;
 	    this->clip.w = 46;
-	    this->clip.h = 32;
+	    this->clip.h = 19;
 
        
     };

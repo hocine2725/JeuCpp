@@ -93,7 +93,7 @@ bool Jeu::loadMedia( Tile* tiles[] ,SDL_Renderer* gRenderer,SDL_Rect* gTileClips
 		success = false;
 	}
 
-	if( !ArmeTexture.loadFromFile( "arme.png",gRenderer  ) )
+	if( !ArmeTexture.loadFromFile( "knife.png",gRenderer  ) )
 	{
 		printf( "Failed to load dot texture!\n" );
 		success = false;
@@ -250,4 +250,23 @@ bool Jeu:: setTiles( Tile* tiles[],SDL_Rect* gTileClips )
 
     //If the map was loaded fine
     return tilesLoaded;
+}
+
+
+void Jeu::jeuUpdate(SDL_Rect* gTileClips,Joueur joueur,Garde garde,Garde garde2){
+for( int i = 0; i < TOTAL_TILES; ++i )
+				{	
+
+					//tileSet[ i ]->render(gTileClips,jeu.gDotTexture,jeu.gRenderer);
+					this->gTileTexture.render(this->gRenderer, tileSet[i]->getBox().x, tileSet[i]->getBox().y , &gTileClips[ tileSet[i]->getType()]);
+
+				}
+
+this->gPersonnageTexture.render(this->gRenderer,joueur.getMBox().x,joueur.getMBox().y,&joueur.clip[joueur.getFrame()/4][joueur.getCurrent_clip()]);
+
+				
+				
+				this->gGardeTexture.render(this->gRenderer,garde.getMBox().x,garde.getMBox().y,&garde.clip[garde.getFrame()/4][garde.getCurrent_clip()]);
+				this->gGardeTexture.render(this->gRenderer,garde2.getMBox().x,garde2.getMBox().y,&garde2.clip[garde2.getFrame()/4][garde2.getCurrent_clip()]);
+				
 }

@@ -68,11 +68,14 @@ int main( int argc, char* args[] )
     else
 	{
 		//The level tiles
-		Tile* tileSet[ TOTAL_TILES ];
+		/*int w, h;
+		SDL_Texture *img = NULL;
+		img = IMG_LoadTexture(jeu.gRenderer, "/hello_world.bmp");
+		SDL_QueryTexture(img, NULL, NULL, &w, &h);*/
 
 
 		//Load media
-		if( !jeu.loadMedia( tileSet,jeu.gRenderer, gTileClips) )
+		if( !jeu.loadMedia( jeu.tileSet,jeu.gRenderer, gTileClips) )
 		{
 			printf( "Failed to load media!\n" );
 		}
@@ -100,17 +103,6 @@ int main( int argc, char* args[] )
 			int m=0;
 			int n=0;
 
-			SDL_Rect gSpriteClips[1];
-			//LTexture gSpriteSheetTexture;
-			//jeu.gTileTexture.loadFromFile("tiles.png",jeu.gRenderer );
-
-			//gSpriteSheetTexture.loadFromFile( "hero1.png" ,jeu.gRenderer);
-			gSpriteClips[ 0 ].x = 0;
-			gSpriteClips[ 0 ].y = 32*4;
-			gSpriteClips[ 0 ].w = 32;
-			gSpriteClips[ 0 ].h = 32;
-
-			//SDL_Rect* currentClip = &gSpriteClips[0];
 			
 			Arme arme(200,150);
 
@@ -142,22 +134,16 @@ int main( int argc, char* args[] )
 				SDL_SetRenderDrawColor( jeu.gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( jeu.gRenderer );
 		
-				if( joueur.getFrame()/4 >=4 ){
-					 //std::cout<<"zero"<<std::endl;
-					joueur.setFrame(0);
-				}	
+				joueur.frameUpdate();
 
-				//gSpriteSheetTexture.render(jeu.gRenderer, ( SCREEN_WIDTH - currentClip->w ) / 2, ( SCREEN_HEIGHT - currentClip->h ) / 2 , currentClip );
-				for( int i = 0; i < TOTAL_TILES; ++i )
-				{	
+			
+				jeu.jeuUpdate(gTileClips,joueur,garde,garde2);
 
-					//tileSet[ i ]->render(gTileClips,jeu.gDotTexture,jeu.gRenderer);
-					jeu.gTileTexture.render(jeu.gRenderer, tileSet[i]->getBox().x, tileSet[i]->getBox().y , &gTileClips[ tileSet[i]->getType()]);
-				}
-		
-				joueur.deplacement(tileSet);
-				garde.deplacement(tileSet);
-				garde2.deplacement(tileSet);
+				joueur.deplacement(jeu.tileSet);
+				garde.deplacement(jeu.tileSet);
+				garde2.deplacement(jeu.tileSet);
+
+
 				if(garde.checkJoueur(joueur.getMBox()) || garde2.checkJoueur(joueur.getMBox())){
 					//std::cout<<"perdu, position garde : "<<garde.getMBox().y<<", position joueur :"<<joueur.getMBox().y<<std::endl;
 					std::cout<<"perdu, delta position : "<<garde.getMBox().y - joueur.getMBox().y<<std::endl;
@@ -166,14 +152,6 @@ int main( int argc, char* args[] )
 				}
 
 
-				//gSpriteSheetTexture.render(jeu.gRenderer,dot.getMBox().x,dot.getMBox().y,&gSpriteClips[0]);
-
-				jeu.gPersonnageTexture.render(jeu.gRenderer,joueur.getMBox().x,joueur.getMBox().y,&joueur.clip[joueur.getFrame()/4][joueur.getCurrent_clip()]);
-
-				
-				
-				jeu.gGardeTexture.render(jeu.gRenderer,garde.getMBox().x,garde.getMBox().y,&garde.clip[garde.getFrame()/4][garde.getCurrent_clip()]);
-				jeu.gGardeTexture.render(jeu.gRenderer,garde2.getMBox().x,garde2.getMBox().y,&garde2.clip[garde2.getFrame()/4][garde2.getCurrent_clip()]);
 				
 				if(joueur.tire==true){
 					if(Collision(garde.getMBox(),joueur.getMBox())){
@@ -182,20 +160,6 @@ int main( int argc, char* args[] )
 
 				}
 
-				
-
-				/*SDL_Rect BalleBox;
-				Balle b =joueur.my_list.at(0);
-
-				BalleBox=b.getClip();
-
-				std::cout<<"main!"<<b.getBox().y<<std::endl;
-				jeu.BalleTexture.render(jeu.gRenderer,b.getBox().x,b.getBox().y,&BalleBox);*/
-					
-				
-
-				
-				//std::cout<<BalleBox.y<<std::endl;
 
 				SDL_Rect armeBox=arme.getClip();
 				SDL_Rect MoneyBox=money.getClip();
@@ -222,7 +186,7 @@ int main( int argc, char* args[] )
 			}
 
 			//gSpriteSheetTexture.free();
-			(*tileSet)->close( tileSet, jeu.gTileTexture, jeu.gRenderer);
+			//(*tileSet)->close( tileSet, jeu.gTileTexture, jeu.gRenderer);
 
 
 		}

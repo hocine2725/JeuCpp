@@ -31,6 +31,8 @@ class Joueur : public Personnage
 
     bool getArmee(){return armee;}
 
+    void frameUpdate();
+
     void tirer();
 
     //SDL_Rect** getClip(){return clip;} //todo : mettre en protected
