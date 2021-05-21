@@ -8,9 +8,8 @@ class Garde : public Personnage
 {
     public:
 
-    bool mort;
 		//Constructeur
-    Garde(int v, int posX);
+    Garde(int v, int posX, int posY, bool dir);
 
     //Destructeur
     //~Garde();
@@ -20,7 +19,8 @@ class Garde : public Personnage
 
 		void deplacement(Tile *tiles[]);
 
-
+    bool getMort(){return mort;}
+    void setMort(bool m){mort = m;}
 
     SDL_Rect clip[4][4];
 
@@ -29,6 +29,9 @@ class Garde : public Personnage
         //Distance jusqu'à laquelle peut voir le garde
         int vision;
 
+        bool mort = false;
+
+        bool direction;
 
 
         int mVelY;
