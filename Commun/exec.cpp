@@ -6,51 +6,6 @@
 
 #include <SDL2/SDL_ttf.h>
 
-bool Collision( SDL_Rect a, SDL_Rect b )
-{
-    //The sides of the rectangles
-    int leftA, leftB;
-    int rightA, rightB;
-    int topA, topB;
-    int bottomA, bottomB;
-
-    //Calculate the sides of rect A
-    leftA = a.x;
-    rightA = a.x + a.w;
-    topA = a.y;
-    bottomA = a.y + a.h;
-
-    //Calculate the sides of rect B
-    leftB = b.x;
-    rightB = b.x + b.w;
-    topB = b.y;
-    bottomB = b.y + b.h;
-
-    //If any of the sides from A are outside of B
-    if( bottomA <= topB )
-    {
-        return false;
-    }
-
-    if( topA >= bottomB )
-    {
-        return false;
-    }
-
-    if( rightA <= leftB )
-    {
-        return false;
-    }
-
-    if( leftA >= rightB )
-    {
-        return false;
-    }
-
-    //If none of the sides from A are outside B
-    return true;
-}
-
 
 
 int main( int argc, char* args[] )
@@ -97,8 +52,9 @@ int main( int argc, char* args[] )
 
 		
 
-			Garde garde(100, 30);
-			Garde garde2(100, 380);
+			Garde garde(100, 30, 30, true);
+			// Garde garde2(100, 380, 20, true);
+			Garde garde2(100, 50, 20, false);
 
 			int m=0;
 			int n=0;
@@ -144,7 +100,7 @@ int main( int argc, char* args[] )
 				garde2.deplacement(jeu.tileSet);
 
 
-				if(garde.checkJoueur(joueur.getMBox()) || garde2.checkJoueur(joueur.getMBox())){
+				if( ( (!garde.getMort()) && garde.checkJoueur(joueur.getMBox())) || ( (!garde2.getMort()) && garde2.checkJoueur(joueur.getMBox()) ) ){
 					//std::cout<<"perdu, position garde : "<<garde.getMBox().y<<", position joueur :"<<joueur.getMBox().y<<std::endl;
 					std::cout<<"perdu, delta position : "<<garde.getMBox().y - joueur.getMBox().y<<std::endl;
 					//std::cout<<"perdu"<<std::endl;
@@ -153,11 +109,9 @@ int main( int argc, char* args[] )
 
 
 				
-				if(joueur.tire==true){
-					if(Collision(garde.getMBox(),joueur.getMBox())){
-						std::cout<<"poignardé"<<std::endl;
-					}
-
+				if(joueur.tire==true && garde.checkCollision(joueur.getMBox())){
+					std::cout<<"poignardé"<<std::endl;
+					garde.setMort(true);
 				}
 
 
