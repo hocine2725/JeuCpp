@@ -16,7 +16,7 @@ class Joueur : public Personnage
 
   bool tire;
   
-
+        bool paye;
     Joueur(std::string n, int i);
   
     //Destructeur
@@ -27,11 +27,16 @@ class Joueur : public Personnage
 
 		void deplacement(Tile *tiles[]);
 
-    bool ramasserObjet(Objet o);
+    bool ramasserObjet(Objet& o);
 
     bool getArmee(){return armee;}
 
     void frameUpdate();
+
+    void corruption();
+    int getMoney(){
+      return money;
+    }
 
     void tirer();
 

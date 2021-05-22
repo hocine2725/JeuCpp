@@ -6,6 +6,11 @@
 
 #include <SDL2/SDL_ttf.h>
 
+#include <string>
+#include <thread>
+#include <chrono>
+
+
 
 
 int main( int argc, char* args[] )
@@ -15,31 +20,31 @@ int main( int argc, char* args[] )
     ///////////////////////////////////////////////
 
     Jeu jeu;
+
     if( !jeu.init() )
 	{
 		printf( "Failed to initialize!\n" );
 	}
-
+	
+	
     else
 	{
-		//The level tiles
-		/*int w, h;
-		SDL_Texture *img = NULL;
-		img = IMG_LoadTexture(jeu.gRenderer, "/hello_world.bmp");
-		SDL_QueryTexture(img, NULL, NULL, &w, &h);*/
+		
 
-
+		
 		//Load media
 		if( !jeu.loadMedia( jeu.tileSet,jeu.gRenderer, gTileClips) )
 		{
 			printf( "Failed to load media!\n" );
 		}
+
+		
 		
 
         else
 		{
 			
-
+			
 
 			//Main loop flag
 			bool quit = false;
@@ -50,7 +55,6 @@ int main( int argc, char* args[] )
 			//The dot that will be moving around on the screen
 			Joueur joueur("lea", 1);
 
-		
 
 			Garde garde(100, 30, 30, true);
 			// Garde garde2(100, 380, 20, true);
@@ -63,6 +67,26 @@ int main( int argc, char* args[] )
 			Arme arme(200,150);
 
 			Argent money(280,200);		
+
+
+			TTF_Init();
+			TTF_Font* Sans = TTF_OpenFont( "Sans.ttf", 65);
+
+				
+				if(Sans==nullptr){
+					std::cout<<"null"<<std::endl;
+				}
+
+
+			SDL_Color White = {255, 0,0 };
+
+SDL_Rect Message_rect; //create a rect
+Message_rect.x = 500;  //controls the rect's x coordinate 
+Message_rect.y = 400; // controls the rect's y coordinte
+Message_rect.w = 500/2; // controls the width of the rect
+Message_rect.h =250/4;// controls the height of the rect
+
+
 
 			//While application is running
 			while( !quit )
@@ -89,6 +113,28 @@ int main( int argc, char* args[] )
 
 				SDL_SetRenderDrawColor( jeu.gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( jeu.gRenderer );
+
+
+					std::string s = "Argent restant : "+std::to_string(joueur.getMoney());
+ 
+    int n = s.length();
+ 
+    // declaring character array
+    char char_array[n + 1];
+ 
+    // copying the contents of the
+    // string to char array
+    strcpy(char_array, s.c_str());
+
+
+
+
+				SDL_Surface* surfaceMessage =TTF_RenderText_Solid(Sans, char_array, White); 
+				SDL_Texture* Message = SDL_CreateTextureFromSurface(jeu.gRenderer, surfaceMessage);
+			
+
+
+
 		
 				joueur.frameUpdate();
 
@@ -114,6 +160,23 @@ int main( int argc, char* args[] )
 					garde.setMort(true);
 				}
 
+				if(joueur.paye==true && garde.checkCollision(joueur.getMBox())){
+					std::cout<<"corrompu"<<std::endl;
+					garde.setMort(true);
+					joueur.paye=false;
+				}
+
+
+				if(joueur.tire==true && garde2.checkCollision(joueur.getMBox())){
+					std::cout<<"poignardé"<<std::endl;
+					garde2.setMort(true);
+				}
+
+				if(joueur.paye==true && garde2.checkCollision(joueur.getMBox())){
+					std::cout<<"corrompu"<<std::endl;
+					garde2.setMort(true);
+				}
+
 
 				SDL_Rect armeBox=arme.getClip();
 				SDL_Rect MoneyBox=money.getClip();
@@ -121,19 +184,12 @@ int main( int argc, char* args[] )
 			
 				jeu.ArmeTexture.render(jeu.gRenderer,arme.getX(),arme.getY(),&armeBox);
 				jeu.MoneyTexture.render(jeu.gRenderer,money.getX(),money.getY(),&MoneyBox);
-			
-				
-				bool rama=joueur.ramasserObjet(arme);
-				if (rama){
-					arme.set();
-				}
 
-				bool rama2=joueur.ramasserObjet(money);
-				if (rama2){
-					money.set();
-				}
+				joueur.ramasserObjet(arme);
+				joueur.ramasserObjet(money);
 		
 
+				SDL_RenderCopy(jeu.gRenderer, Message, NULL, &Message_rect);
 
 				SDL_RenderPresent( jeu.gRenderer );
 				
@@ -141,7 +197,6 @@ int main( int argc, char* args[] )
 
 			//gSpriteSheetTexture.free();
 			//(*tileSet)->close( tileSet, jeu.gTileTexture, jeu.gRenderer);
-
 
 		}
 

@@ -14,9 +14,14 @@ class Jeu
     bool setTiles(Tile* tiles[],SDL_Rect* gTileClips);
  
     void jeuUpdate(SDL_Rect* gTileClips,Joueur joueur,Garde garde,Garde garde2);
+
+    void accueil();
+
     SDL_Window* gWindow ;
 
     SDL_Renderer* gRenderer;
+
+
     LTexture gPersonnageTexture;
     //LTexture gPersonnage2Texture;
     LTexture gGardeTexture;
@@ -24,11 +29,17 @@ class Jeu
 
     LTexture ArmeTexture;
 
-     LTexture MoneyTexture;
+    LTexture MoneyTexture;
 
-       LTexture BalleTexture;
+    LTexture BalleTexture;
+
 
        Tile* tileSet[ TOTAL_TILES ];
+
+       SDL_Texture *img = NULL;
+
+
+    bool acc=true;
 
     private:
    

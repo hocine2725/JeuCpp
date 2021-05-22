@@ -6,6 +6,7 @@ Joueur::Joueur(std::string n, int i)
     nom = n;
     armee=false;
     money=0;
+     paye=false;
 
     tire=false;
     //Initialise le numero du joueur
@@ -56,6 +57,23 @@ void Joueur::tirer(){
 
 }
 
+void Joueur::corruption(){
+
+
+    if(this->money>=20){ 
+        std::cout<<"money before: "<<money<<std::endl;
+        std::cout<<"corruption"<<std::endl;
+        money=money-20;
+          std::cout<<"money after: "<<money<<std::endl;
+         paye=true;
+    }
+
+    else {
+        std::cout<<"pas assez d'argent "<<std::endl;
+
+    }
+}
+
 void Joueur::evenement(SDL_Event& e)
 {
     //If a key was pressed
@@ -67,25 +85,31 @@ void Joueur::evenement(SDL_Event& e)
             case SDLK_UP: mVelY -= PERSONNAGE_VEL;
                 current_clip = 2;
                 tire=false;
+   
             break;
             case SDLK_DOWN: mVelY += PERSONNAGE_VEL;
                 current_clip = 0;
                 tire=false;
+             
             break;
             case SDLK_LEFT: mVelX -= PERSONNAGE_VEL; 
                 current_clip = 3;
                 tire=false;
+
             break;
             case SDLK_RIGHT: mVelX += PERSONNAGE_VEL; 
                 current_clip = 1;
                 tire=false;
+
             break;
             case SDLK_t:
 
             
                 tirer();
-            
+            break;
 
+            case SDLK_c:
+                corruption();
             break;
         }
     }
@@ -136,17 +160,19 @@ void Joueur::deplacement(Tile *tiles[])
 
 
 //Return true si l'objet est ramasse
-bool Joueur::ramasserObjet(Objet o){
+bool Joueur::ramasserObjet(Objet& o){
     if(this->checkCollision(o.getBox())){
         if (o.getType()==1){
             //std::cout<<"arme"<<std::endl;
             o.ramassee = true;
             this->armee=true;
+            o.set();
             return true;
         }
         else if( o.getType()==2){
             o.ramassee=true;
             this->money= 50;
+            o.set();
             return true;
         }
         return true;

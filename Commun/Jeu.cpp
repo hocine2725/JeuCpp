@@ -11,6 +11,7 @@ Jeu::~Jeu(){
 
 	gWindow = NULL;
 	gRenderer = NULL;
+	SDL_DestroyTexture(img);
 }
 
 bool Jeu::init()
@@ -63,6 +64,7 @@ bool Jeu::init()
 			}
 		}
 	}
+	this->accueil();
 
 	return success;
 }
@@ -269,4 +271,67 @@ this->gPersonnageTexture.render(this->gRenderer,joueur.getMBox().x,joueur.getMBo
 				this->gGardeTexture.render(this->gRenderer,garde.getMBox().x,garde.getMBox().y,&garde.clip[garde.getFrame()/4][garde.getCurrent_clip()]);
 				this->gGardeTexture.render(this->gRenderer,garde2.getMBox().x,garde2.getMBox().y,&garde2.clip[garde2.getFrame()/4][garde2.getCurrent_clip()]);
 				
+}
+
+void Jeu::accueil(){
+	
+		int w, h; // texture width & height
+
+		img = IMG_LoadTexture(gRenderer,"menu.png");
+		if (img){
+			std::cout<<"ok"<<std::endl;
+		}
+	SDL_QueryTexture(img, NULL, NULL, &w, &h); 
+
+	SDL_Rect texr; texr.x = 0; texr.y = 0; texr.w = w; texr.h = h; 
+
+
+	int n,m;
+
+
+			//Event handler
+			SDL_Event e;
+
+	while( acc )
+			{
+				//Handle events on queue
+				while( SDL_PollEvent( &e ) != 0 )
+				{
+					//User requests quit
+					if( e.type == SDL_QUIT )
+					{
+						//quit = true;
+					}
+					
+					if(e.type==SDL_MOUSEMOTION){
+							n=e.motion.x;
+							m=e.motion.y;
+							//std::cout<<"x"<<n<<std::endl;
+							//std::cout<<"y"<<m<<std::endl;
+					}
+
+					if(e.type == SDL_MOUSEBUTTONDOWN && n>740 && n<925 && m>436 && m<466){
+						acc=false;
+					}
+
+					// pour quitter
+					/*if(e.type == SDL_MOUSEBUTTONDOWN && n>740 && n<925 && m>500 && m<530){
+						acc=false;
+					}*/
+
+					//Handle input for the joueur
+					
+					
+				}
+
+	SDL_RenderClear( gRenderer );
+	SDL_RenderCopy(gRenderer, img, NULL, &texr);
+	SDL_RenderPresent(gRenderer);
+
+
+			
+	}
+
+
+
 }
