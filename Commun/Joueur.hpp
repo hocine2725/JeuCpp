@@ -3,7 +3,6 @@
 
 #include <list>
 
-
 #include "Personnage.hpp"
 
 #include <vector>
@@ -11,56 +10,54 @@ using std::vector;
 
 class Joueur : public Personnage
 {
-    public:
-		//Constructeur
+public:
+	//Constructeur
 
-  bool tire;
-  
-        bool paye;
-    Joueur(std::string n, int i);
-  
-    //Destructeur
-    //~Joueur();
-        
-    //Prends les entrees calvier
-		void evenement(SDL_Event& e);
+	bool tire;
 
-		void deplacement(Tile *tiles[]);
+	bool paye;
+	Joueur(std::string n, int i);
 
-    bool ramasserObjet(Objet& o);
+	//Destructeur
+	//~Joueur();
 
-    bool getArmee(){return armee;}
+	//Prends les entrees calvier
+	void evenement(SDL_Event &e);
 
-    void frameUpdate();
+	void deplacement(Tile *tiles[]);
 
-    void corruption();
-    int getMoney(){
-      return money;
-    }
+	bool ramasserObjet(Objet &o);
 
-    void tirer();
+	bool getArmee() { return armee; }
 
-    //SDL_Rect** getClip(){return clip;} //todo : mettre en protected
-    SDL_Rect clip[4][4];
+	void frameUpdate();
 
+	void corruption();
+	int getMoney()
+	{
+		return money;
+	}
 
-    protected:
-		//Nom du joueur
-        std::string nom;
+	void tirer();
 
+	//SDL_Rect** getClip(){return clip;} //todo : mettre en protected
+	SDL_Rect clip[4][4];
 
-        bool armee;
+protected:
+	//Nom du joueur
+	std::string nom;
 
-        int money;
+	bool armee;
 
-        int id;
+	int money;
 
-        
+	bool cle;
 
-        //SDL_Rect clip[4][4];
+	int id;
 
+	//SDL_Rect clip[4][4];
 
-        int mVelX, mVelY;
+	int mVelX, mVelY;
 };
 
 #endif

@@ -5,17 +5,16 @@ Personnage::Personnage()
     //Initialise la boite pour la collision
     mBox.x = 10;
     mBox.y = 10;
-	mBox.w = PERSONNAGE_WIDTH;
-	mBox.h = PERSONNAGE_HEIGHT;
+    mBox.w = PERSONNAGE_WIDTH;
+    mBox.h = PERSONNAGE_HEIGHT;
 
     //Initialise la vitesse
     mVelX = PERSONNAGE_VEL;
     mVelY = PERSONNAGE_VEL;
-    
+
     //Initialise la possession d'objet
     objet = false;
 }
-
 
 bool Personnage::checkCollision(SDL_Rect a)
 {
@@ -38,22 +37,22 @@ bool Personnage::checkCollision(SDL_Rect a)
     bottom = mBox.y + mBox.h;
 
     //If any of the sides from A are outside of B
-    if( bottomA <= top )
+    if (bottomA <= top)
     {
         return false;
     }
 
-    if( topA >= bottom )
+    if (topA >= bottom)
     {
         return false;
     }
 
-    if( rightA <= left )
+    if (rightA <= left)
     {
         return false;
     }
 
-    if( leftA >= right )
+    if (leftA >= right)
     {
         return false;
     }
@@ -62,17 +61,17 @@ bool Personnage::checkCollision(SDL_Rect a)
     return true;
 }
 
-bool Personnage::touchesWall(Tile* tiles[])
+bool Personnage::touchesWall(Tile *tiles[])
 {
     //Go through the tiles
-    for( int i = 0; i < TOTAL_TILES; ++i )
+    for (int i = 0; i < TOTAL_TILES; ++i)
     {
         //If the tile is a wall type tile
-        if( ( tiles[i]->getType() == T4 ))
+        if ((tiles[i]->getType() == T4) || (tiles[i]->getType() == T7))
         {
             //If the collision box touches the wall tile
-            if( this->checkCollision(tiles[i]->getBox() ) )
-            {	
+            if (this->checkCollision(tiles[i]->getBox()))
+            {
                 return true;
             }
         }
