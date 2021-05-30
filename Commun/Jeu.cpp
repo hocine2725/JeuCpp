@@ -7,12 +7,17 @@ Jeu::Jeu()
 }
 Jeu::~Jeu()
 {
+	//Destroy window
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
+	SDL_DestroyTexture(img);
 
 	gWindow = NULL;
 	gRenderer = NULL;
-	SDL_DestroyTexture(img);
+
+	//Quit SDL subsystems
+	IMG_Quit();
+	SDL_Quit();
 }
 
 bool Jeu::init()
@@ -65,9 +70,9 @@ bool Jeu::init()
 			}
 		}
 	}
-	this->accueil();
+	return this->accueil();
 
-	return success;
+	// return success;
 }
 
 bool Jeu::loadMedia(Tile *tiles[], SDL_Renderer *gRenderer, SDL_Rect *gTileClips)
@@ -82,12 +87,6 @@ bool Jeu::loadMedia(Tile *tiles[], SDL_Renderer *gRenderer, SDL_Rect *gTileClips
 		success = false;
 	}
 
-	if (!MoneyTexture.loadFromFile("money.png", gRenderer))
-	{
-		printf("Failed to load money texture!\n");
-		success = false;
-	}
-
 	if (!gGardeTexture.loadFromFile("policeman.png", gRenderer))
 	{
 		printf("Failed to load guard texture!\n");
@@ -97,6 +96,12 @@ bool Jeu::loadMedia(Tile *tiles[], SDL_Renderer *gRenderer, SDL_Rect *gTileClips
 	if (!ArmeTexture.loadFromFile("knife.png", gRenderer))
 	{
 		printf("Failed to load knife texture!\n");
+		success = false;
+	}
+
+	if (!MoneyTexture.loadFromFile("money.png", gRenderer))
+	{
+		printf("Failed to load money texture!\n");
 		success = false;
 	}
 
@@ -146,21 +151,11 @@ void Jeu::close(Tile *tiles[], SDL_Renderer *gRenderer, SDL_Rect *gTileClips)
 
 	//Free loaded images
 	gPersonnageTexture.free();
-	MoneyTexture.free();
-	gTileTexture.free();
 	gGardeTexture.free();
+	gTileTexture.free();
 	ArmeTexture.free();
-	// gSpriteSheetTexture.free();
-	//Destroy window
-	SDL_DestroyRenderer(gRenderer);
-	SDL_DestroyWindow(gWindow);
-
-	gWindow = NULL;
-	gRenderer = NULL;
-
-	//Quit SDL subsystems
-	IMG_Quit();
-	SDL_Quit();
+	MoneyTexture.free();
+	CleTexture.free();
 }
 
 bool Jeu::setTiles(Tile *tiles[], SDL_Rect *gTileClips)
@@ -282,7 +277,7 @@ bool Jeu::setTiles(Tile *tiles[], SDL_Rect *gTileClips)
 	return tilesLoaded;
 }
 
-void Jeu::jeuUpdate(SDL_Rect *gTileClips, Joueur joueur, Garde garde, Garde garde2)
+void Jeu::jeuUpdate(SDL_Rect *gTileClips, Joueur joueur, Garde garde, Garde garde2, Garde garde3)
 {
 	for (int i = 0; i < TOTAL_TILES; ++i)
 	{
@@ -295,9 +290,10 @@ void Jeu::jeuUpdate(SDL_Rect *gTileClips, Joueur joueur, Garde garde, Garde gard
 
 	this->gGardeTexture.render(this->gRenderer, garde.getMBox().x, garde.getMBox().y, &garde.clip[garde.getFrame() / 4][garde.getCurrent_clip()]);
 	this->gGardeTexture.render(this->gRenderer, garde2.getMBox().x, garde2.getMBox().y, &garde2.clip[garde2.getFrame() / 4][garde2.getCurrent_clip()]);
+	this->gGardeTexture.render(this->gRenderer, garde3.getMBox().x, garde3.getMBox().y, &garde3.clip[garde3.getFrame() / 4][garde3.getCurrent_clip()]);
 }
 
-void Jeu::accueil()
+bool Jeu::accueil()
 {
 
 	int w, h; // texture width & height
@@ -320,34 +316,29 @@ void Jeu::accueil()
 	//Event handler
 	SDL_Event e;
 
-	while (acc)
+	while (true)
 	{
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{
-			//User requests quit
-			if (e.type == SDL_QUIT)
-			{
-				//quit = true;
-			}
-
 			if (e.type == SDL_MOUSEMOTION)
 			{
 				n = e.motion.x;
 				m = e.motion.y;
-				//std::cout<<"x"<<n<<std::endl;
-				//std::cout<<"y"<<m<<std::endl;
+				// std::cout<<"x"<<n<<std::endl;
+				// std::cout<<"y"<<m<<std::endl;
 			}
 
 			if (e.type == SDL_MOUSEBUTTONDOWN && n > 740 && n < 925 && m > 436 && m < 466)
 			{
-				acc = false;
+				return true;
 			}
 
 			// pour quitter
-			/*if(e.type == SDL_MOUSEBUTTONDOWN && n>740 && n<925 && m>500 && m<530){
-						acc=false;
-					}*/
+			if ((e.type == SDL_MOUSEBUTTONDOWN && n > 740 && n < 925 && m > 550 && m < 570) || e.type == SDL_QUIT)
+			{
+				return false;
+			}
 
 			//Handle input for the joueur
 		}

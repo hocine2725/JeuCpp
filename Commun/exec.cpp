@@ -43,8 +43,11 @@ int main(int argc, char *args[])
 			Joueur joueur("lea", 1);
 
 			Garde garde(100, 30, 30, true);
-			// Garde garde2(100, 380, 20, true);
 			Garde garde2(100, 50, 20, false);
+			Garde garde3(100, 380, 300, true);
+
+			// todo
+			// std::vector<Garde> list_garde = {garde, garde1, garde2, garde3}
 
 			int m = 0;
 			int n = 0;
@@ -63,7 +66,7 @@ int main(int argc, char *args[])
 				std::cout << "null" << std::endl;
 			}
 
-			SDL_Color White = {255, 0, 0};
+			SDL_Color White = {255, 255, 255};
 
 			SDL_Rect Message_rect;	  //create a rect
 			Message_rect.x = 500;	  //controls the rect's x coordinate
@@ -113,11 +116,12 @@ int main(int argc, char *args[])
 
 				joueur.frameUpdate();
 
-				jeu.jeuUpdate(gTileClips, joueur, garde, garde2);
+				jeu.jeuUpdate(gTileClips, joueur, garde, garde2, garde3);
 
 				joueur.deplacement(jeu.tileSet);
 				garde.deplacement(jeu.tileSet);
 				garde2.deplacement(jeu.tileSet);
+				garde3.deplacement(jeu.tileSet);
 
 				if (((!garde.getMort()) && garde.checkJoueur(joueur.getMBox())) || ((!garde2.getMort()) && garde2.checkJoueur(joueur.getMBox())))
 				{

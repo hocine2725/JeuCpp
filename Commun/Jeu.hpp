@@ -14,9 +14,9 @@ public:
 
     bool setTiles(Tile *tiles[], SDL_Rect *gTileClips);
 
-    void jeuUpdate(SDL_Rect *gTileClips, Joueur joueur, Garde garde, Garde garde2);
+    void jeuUpdate(SDL_Rect *gTileClips, Joueur joueur, Garde garde, Garde garde2, Garde garde3);
 
-    void accueil();
+    bool accueil();
 
     SDL_Window *gWindow;
 
@@ -31,7 +31,7 @@ public:
 
     LTexture MoneyTexture;
 
-    LTexture BalleTexture;
+    // LTexture BalleTexture;
 
     LTexture CleTexture;
 
