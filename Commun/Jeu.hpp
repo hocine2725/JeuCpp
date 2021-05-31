@@ -14,7 +14,7 @@ public:
 
     bool setTiles(Tile *tiles[], SDL_Rect *gTileClips);
 
-    void jeuUpdate(SDL_Rect *gTileClips, Joueur joueur, Garde garde, Garde garde2, Garde garde3);
+    void jeuUpdate(SDL_Rect *gTileClips, Joueur joueur,Garde garde, Garde garde2, Garde garde3);
 
     bool accueil();
 
