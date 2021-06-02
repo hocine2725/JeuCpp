@@ -56,6 +56,8 @@ void Joueur::tirer()
     {
         std::cout << "tirer" << std::endl;
         tire = true;
+        // on eleve l'arme
+        this->armee=false;
         // std::cout<<"after: "<<b.getBox().y<<std::endl;
     }
 }
@@ -140,6 +142,58 @@ void Joueur::evenement(SDL_Event &e)
             break;
         }
     }
+}
+
+void Joueur::evenement2(SDL_Event& e)
+{
+ 
+        //std::cout<<"j2 :"<<mVelY<<std::endl;
+
+        switch(e.type){
+
+						case SDL_KEYDOWN:
+						key[SDL_GetScancodeFromKey(e.key.keysym.sym)]=1;
+						//std::cout<<"here"<<std::endl;
+
+						break;
+						case SDL_KEYUP:
+							key[SDL_GetScancodeFromKey(e.key.keysym.sym)]=0;
+						break;
+
+		}
+
+
+        if(key[SDL_SCANCODE_W]) {
+       // std::cout<<"Z"<<std::endl;
+  
+            mVelY -= PERSONNAGE_VEL;
+                current_clip = 2;
+                tire=false;
+     
+
+        }
+     
+
+        else if(key[SDL_SCANCODE_S]) {
+       // std::cout<<"S"<<std::endl;
+        mVelY += PERSONNAGE_VEL;
+                current_clip = 0;
+                tire=false;
+        }
+        else if(key[SDL_SCANCODE_D]) {
+       // std::cout<<"D"<<std::endl;
+        mVelX += PERSONNAGE_VEL; 
+                current_clip = 1;
+                tire=false;
+        }
+
+        else if(key[SDL_SCANCODE_A]) {
+        //std::cout<<"Q"<<std::endl;
+       mVelX -= PERSONNAGE_VEL; 
+                current_clip = 3;
+                tire=false;
+        }
+
 }
 
 void Joueur::deplacement(Tile *tiles[])

@@ -290,6 +290,7 @@ void Jeu::jeuUpdate(SDL_Rect *gTileClips, Joueur joueur, Garde garde, Garde gard
 
 	this->gGardeTexture.render(this->gRenderer, garde.getMBox().x, garde.getMBox().y, &garde.clip[garde.getFrame() / 4][garde.getCurrent_clip()]);
 	this->gGardeTexture.render(this->gRenderer, garde2.getMBox().x, garde2.getMBox().y, &garde2.clip[garde2.getFrame() / 4][garde2.getCurrent_clip()]);
+
 	this->gGardeTexture.render(this->gRenderer, garde3.getMBox().x, garde3.getMBox().y, &garde3.clip[garde3.getFrame() / 4][garde3.getCurrent_clip()]);
 }
 

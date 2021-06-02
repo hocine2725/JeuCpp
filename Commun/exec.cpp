@@ -41,6 +41,7 @@ int main(int argc, char *args[])
 
 			//The dot that will be moving around on the screen
 			Joueur joueur("lea", 1);
+			Joueur joueur2("hocine", 0);
 
 			Garde garde(100, 30, 30, true);
 			Garde garde2(100, 50, 20, false);
@@ -95,6 +96,7 @@ int main(int argc, char *args[])
 
 					//Handle input for the joueur
 					joueur.evenement(e);
+					joueur2.evenement2(e);
 				}
 
 				SDL_SetRenderDrawColor(jeu.gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -117,6 +119,11 @@ int main(int argc, char *args[])
 				joueur.frameUpdate();
 
 				jeu.jeuUpdate(gTileClips, joueur, garde, garde2, garde3);
+
+				jeu.gPersonnageTexture.render(jeu.gRenderer,joueur2.getMBox().x,joueur2.getMBox().y,&joueur2.clip[joueur2.getFrame()/4][joueur2.getCurrent_clip()]);
+
+
+				joueur2.deplacement(jeu.tileSet);
 
 				joueur.deplacement(jeu.tileSet);
 				garde.deplacement(jeu.tileSet);

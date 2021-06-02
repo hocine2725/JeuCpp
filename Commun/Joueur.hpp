@@ -23,6 +23,7 @@ public:
 
 	//Prends les entrees calvier
 	void evenement(SDL_Event &e);
+	void evenement2(SDL_Event& e);
 
 	void deplacement(Tile *tiles[]);
 
@@ -46,7 +47,7 @@ public:
 protected:
 	//Nom du joueur
 	std::string nom;
-
+	    char key[512];
 	bool armee;
 
 	int money;
