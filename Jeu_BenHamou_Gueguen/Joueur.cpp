@@ -63,6 +63,11 @@ bool Joueur::tirer()
     return false;
 }
 
+//Remplace tirer, pour l'IA
+bool Joueur::tirer2()
+{
+}
+
 void Joueur::corruption()
 {
 
@@ -79,6 +84,12 @@ void Joueur::corruption()
     {
         std::cout << "pas assez d'argent " << std::endl;
     }
+}
+
+
+//Remplace corruption, pour l'IA
+void Joueur::corruption2()
+{
 }
 
 void Joueur::evenement(SDL_Event &e)

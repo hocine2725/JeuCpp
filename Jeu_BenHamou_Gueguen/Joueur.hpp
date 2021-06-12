@@ -33,6 +33,10 @@ public:
 	//Pour corrompre et tuer le garde
 	void corruption();
 	bool tirer();
+	
+	//Pour l'IA
+	void corruption2();
+	bool tirer2();
 
 	//Pour verifier les actions faites par le joueur
 	int action(Garde garde);
