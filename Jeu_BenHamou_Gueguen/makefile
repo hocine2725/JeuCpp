@@ -47,6 +47,7 @@ ObjetTest.o: ObjetTest.cpp Objet.hpp catch.hpp
 	g++ -c -I/usr/include/SDL2 ObjetTest.cpp -lSDL2_image -lSDL2_ttf -lSDL2
 
 clean:
-	rm -f *.o tests_catch
+	rm -f *.o tests_catch exec
+	
 
 	
