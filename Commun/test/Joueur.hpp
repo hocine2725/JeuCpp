@@ -35,13 +35,13 @@ public:
 
 	void frameUpdate();
 
-	void corruption();
+	bool corruption();
 	int getMoney()
 	{
 		return money;
 	}
 
-	void tirer();
+	bool tirer();
 
 	//SDL_Rect** getClip(){return clip;} //todo : mettre en protected
 	SDL_Rect clip[4][4];

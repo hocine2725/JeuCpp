@@ -29,6 +29,9 @@ public:
     int getY() { return y; }
     int getType() { return type; }
 
+    bool getRamasse(){return ramassee;}
+
+    void setRamasse(bool b){ramassee=b;}
 protected:
     //Type d'objet
     int type;

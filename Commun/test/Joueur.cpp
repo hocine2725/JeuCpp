@@ -49,18 +49,20 @@ Joueur::~Joueur()
     free clip;
 }
 */
-void Joueur::tirer()
+bool Joueur::tirer()
 {
     //std::list<Balle> my_list = { Balle(23,23) };
     if (this->armee == true)
     {
         std::cout << "tirer" << std::endl;
         tire = true;
+        return true;
         // std::cout<<"after: "<<b.getBox().y<<std::endl;
     }
+    return false;
 }
 
-void Joueur::corruption()
+bool Joueur::corruption()
 {
 
     if (this->money >= 20)
@@ -70,11 +72,13 @@ void Joueur::corruption()
         money = money - 20;
         std::cout << "money after: " << money << std::endl;
         paye = true;
+        return true;
     }
 
     else
     {
         std::cout << "pas assez d'argent " << std::endl;
+        return false;
     }
 }
 

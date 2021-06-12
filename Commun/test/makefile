@@ -34,14 +34,17 @@ exec: LTexture.o Tile.o Jeu.o Joueur.o Personnage.o Garde.o exec.o Objet.o
 
 # Tests
 
-tests_catch: gardeTest.o Garde.o JoueurTest.o Personnage.o
-	g++ -o tests_catch gardeTest.o Garde.o JoueurTest.o Personnage.o
+tests_catch: gardeTest.o Garde.o JoueurTest.o Joueur.o Personnage.o Objet.o ObjetTest.o
+	g++ -o  tests_catch gardeTest.o Garde.o Joueur.o JoueurTest.o Personnage.o Objet.o ObjetTest.o -lSDL2_ttf -lSDL2
 
 gardeTest.o: gardeTest.cpp Garde.hpp catch.hpp
 	g++ -c -I/usr/include/SDL2 gardeTest.cpp -lSDL2_image -lSDL2_ttf -lSDL2
 
 JoueurTest.o: JoueurTest.cpp Joueur.hpp catch.hpp
 	g++ -c -I/usr/include/SDL2 JoueurTest.cpp -lSDL2_image -lSDL2_ttf -lSDL2
+	
+ObjetTest.o: ObjetTest.cpp Objet.hpp catch.hpp
+	g++ -c -I/usr/include/SDL2 ObjetTest.cpp -lSDL2_image -lSDL2_ttf -lSDL2
 
 clean:
 	rm -f *.o tests_catch
