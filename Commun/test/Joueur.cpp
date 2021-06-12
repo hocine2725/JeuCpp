@@ -16,7 +16,7 @@ Joueur::Joueur(std::string n, int i)
     if (id == 0)
     {
         mBox.x = 200;
-        mBox.y = 150;
+        mBox.y = 200;
     }
     if (id == 1)
     {
@@ -40,15 +40,15 @@ Joueur::Joueur(std::string n, int i)
         }
     }
 }
-/*
-Joueur::~Joueur()
-{
-    for (size_t i = 0; i < 4; i++){
-        free clip[i];
-    }
-    free clip;
-}
-*/
+
+// Joueur::~Joueur()
+// {
+//     for (size_t i = 0; i < 4; i++){
+//         delete[] clip[i];
+//     }
+//     delete[] clip;
+// }
+
 bool Joueur::tirer()
 {
     //std::list<Balle> my_list = { Balle(23,23) };
@@ -56,13 +56,14 @@ bool Joueur::tirer()
     {
         std::cout << "tirer" << std::endl;
         tire = true;
+        // on eleve l'arme
         return true;
         // std::cout<<"after: "<<b.getBox().y<<std::endl;
     }
     return false;
 }
 
-bool Joueur::corruption()
+void Joueur::corruption()
 {
 
     if (this->money >= 20)
@@ -72,13 +73,11 @@ bool Joueur::corruption()
         money = money - 20;
         std::cout << "money after: " << money << std::endl;
         paye = true;
-        return true;
     }
 
     else
     {
         std::cout << "pas assez d'argent " << std::endl;
-        return false;
     }
 }
 
@@ -146,56 +145,69 @@ void Joueur::evenement(SDL_Event &e)
     }
 }
 
-void Joueur::evenement2(SDL_Event& e)
+//Pour faire une IA, modifier le code suivant permettant de régler la vitesse en X et en Y
+void Joueur::evenement2(SDL_Event &e)
 {
- 
-        //std::cout<<"j2 :"<<mVelY<<std::endl;
 
-        switch(e.type){
+    //std::cout<<"j2 :"<<mVelY<<std::endl;
 
-						case SDL_KEYDOWN:
-						key[SDL_GetScancodeFromKey(e.key.keysym.sym)]=1;
-						//std::cout<<"here"<<std::endl;
+    switch (e.type)
+    {
 
-						break;
-						case SDL_KEYUP:
-							key[SDL_GetScancodeFromKey(e.key.keysym.sym)]=0;
-						break;
+    case SDL_KEYDOWN:
+        key[SDL_GetScancodeFromKey(e.key.keysym.sym)] = 1;
+        //std::cout<<"here"<<std::endl;
 
-		}
+        break;
+    case SDL_KEYUP:
+        key[SDL_GetScancodeFromKey(e.key.keysym.sym)] = 0;
+        break;
+    }
 
+    if (key[SDL_SCANCODE_W])
+    {
+        // std::cout<<"Z"<<std::endl;
 
-        if(key[SDL_SCANCODE_W]) {
-       // std::cout<<"Z"<<std::endl;
-  
-            mVelY -= PERSONNAGE_VEL;
-                current_clip = 2;
-                tire=false;
-     
+        mVelY = -PERSONNAGE_VEL;
+        current_clip = 2;
+        tire = false;
+    }
 
-        }
-     
+    else if (key[SDL_SCANCODE_S])
+    {
+        // std::cout<<"S"<<std::endl;
+        mVelY = PERSONNAGE_VEL;
+        current_clip = 0;
+        tire = false;
+    }
+    else if (key[SDL_SCANCODE_D])
+    {
+        // std::cout<<"D"<<std::endl;
+        mVelX = PERSONNAGE_VEL;
+        current_clip = 1;
+        tire = false;
+    }
 
-        else if(key[SDL_SCANCODE_S]) {
-       // std::cout<<"S"<<std::endl;
-        mVelY += PERSONNAGE_VEL;
-                current_clip = 0;
-                tire=false;
-        }
-        else if(key[SDL_SCANCODE_D]) {
-       // std::cout<<"D"<<std::endl;
-        mVelX += PERSONNAGE_VEL; 
-                current_clip = 1;
-                tire=false;
-        }
-
-        else if(key[SDL_SCANCODE_A]) {
+    else if (key[SDL_SCANCODE_A])
+    {
         //std::cout<<"Q"<<std::endl;
-       mVelX -= PERSONNAGE_VEL; 
-                current_clip = 3;
-                tire=false;
-        }
-
+        mVelX = -PERSONNAGE_VEL;
+        current_clip = 3;
+        tire = false;
+    }
+    else if (key[SDL_SCANCODE_T])
+    {
+        tirer();
+    }
+    else if (key[SDL_SCANCODE_C])
+    {
+        corruption();
+    }
+    else
+    {
+        mVelX = 0;
+        mVelY = 0;
+    }
 }
 
 void Joueur::deplacement(Tile *tiles[])
@@ -237,19 +249,19 @@ bool Joueur::ramasserObjet(Objet &o)
         if (o.getType() == 1)
         {
             //std::cout<<"arme"<<std::endl;
-            o.ramassee = true;
+            o.setRamasse(true);
             this->armee = true;
             o.set();
         }
         else if (o.getType() == 2)
         {
-            o.ramassee = true;
+            o.setRamasse(true);
             this->money = 50;
             o.set();
         }
         else if (o.getType() == 3)
         {
-            o.ramassee = true;
+            o.setRamasse(true);
             this->cle = true;
             o.set();
         }
@@ -266,4 +278,44 @@ void Joueur::frameUpdate()
         //std::cout<<"zero"<<std::endl;
         this->setFrame(0);
     }
+}
+
+int Joueur::action(Garde garde)
+{
+    if (((!garde.getMort()) && garde.checkJoueur(this->getMBox())))
+    {
+        //std::cout<<"perdu, position garde : "<<garde.getMBox().y<<", position joueur :"<<joueur.getMBox().y<<std::endl;
+        std::cout << "perdu, delta position : " << garde.getMBox().y - this->getMBox().y << std::endl;
+        //std::cout<<"perdu"<<std::endl;
+        return 0;
+    }
+
+    if (this->tire == true && garde.checkCollision(this->getMBox()))
+    {
+        garde.setMort(true); // Ne fonctionne pas, on le fait donc dans exec.cpp
+        std::cout << "poignardé" << std::endl;
+        return 1;
+    }
+
+    if (this->paye == true && garde.checkCollision(this->getMBox()))
+    {
+        std::cout << "corrompu" << std::endl;
+        garde.setMort(true); // Ne fonctionne pas, on le fait donc dans exec.cpp
+        this->paye = false;
+        return 1;
+    }
+
+    return 2;
+}
+
+bool Joueur::fin(Joueur j2)
+{
+    if ((mBox.x + mBox.w >= SCREEN_WIDTH - mBox.w) && (j2.getMBox().x + j2.getMBox().w >= SCREEN_WIDTH - j2.getMBox().w))
+    {
+        if (this->cle == true || j2.cle == true)
+        {
+            return true;
+        }
+    }
+    return false;
 }

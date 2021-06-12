@@ -4,6 +4,7 @@
 #include <list>
 
 #include "Personnage.hpp"
+#include "Garde.hpp"
 
 #include <vector>
 using std::vector;
@@ -12,44 +13,49 @@ class Joueur : public Personnage
 {
 public:
 	//Constructeur
-
-	bool tire;
-
-	bool paye;
 	Joueur(std::string n, int i);
 
 	//Destructeur
-	//~Joueur();
+	// ~Joueur();
 
 	//Prends les entrees calvier
 	void evenement(SDL_Event &e);
-	void evenement2(SDL_Event& e);
+	void evenement2(SDL_Event &e); // Methode a modifier pour l'IA
 
+	//Deplace le joueur
 	void deplacement(Tile *tiles[]);
 
+	//Permet au joueur de ramasser l'objet
 	bool ramasserObjet(Objet &o);
-
-	bool getArmee() { return armee; }
-
-	void setArme(bool armee){this->armee=armee;}
 
 	void frameUpdate();
 
-	bool corruption();
-	int getMoney()
-	{
-		return money;
-	}
-
+	//Pour corrompre et tuer le garde
+	void corruption();
 	bool tirer();
 
-	//SDL_Rect** getClip(){return clip;} //todo : mettre en protected
+	//Pour verifier les actions faites par le joueur
+	int action(Garde garde);
+
+	//Verifie si je joueur a terminé
+	bool fin(Joueur j2);
+
+	//Getters et setters
+
+	bool getArmee() { return armee; }
+	void setArme(bool armee) { this->armee = armee; }
+
+	int getMoney() { return money; }
+	std::string getNom() { return nom; }
+
 	SDL_Rect clip[4][4];
 
 protected:
 	//Nom du joueur
 	std::string nom;
-	    char key[512];
+
+	char key[512];
+
 	bool armee;
 
 	int money;
@@ -58,9 +64,9 @@ protected:
 
 	int id;
 
-	//SDL_Rect clip[4][4];
+	bool tire;
 
-	int mVelX, mVelY;
+	bool paye;
 };
 
 #endif

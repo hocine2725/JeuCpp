@@ -34,7 +34,7 @@ Objet::Objet(int t, int x, int y)
         this->oBox.w = 40;
     }
 
-    ramassee = false;
+    setRamasse(false);
 
     //Initialise le type d'objet
     //type = 0;

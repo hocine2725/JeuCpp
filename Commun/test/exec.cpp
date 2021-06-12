@@ -16,6 +16,8 @@ int main(int argc, char *args[])
 
 	Jeu jeu;
 
+	int fin = 0;
+
 	if (!jeu.init())
 	{
 		printf("Failed to initialize!\n");
@@ -39,7 +41,7 @@ int main(int argc, char *args[])
 			//Event handler
 			SDL_Event e;
 
-			//The dot that will be moving around on the screen
+			//Les deux personnages
 			Joueur joueur("lea", 1);
 			Joueur joueur2("hocine", 0);
 
@@ -47,18 +49,15 @@ int main(int argc, char *args[])
 			Garde garde2(100, 50, 20, false);
 			Garde garde3(100, 380, 300, true);
 
-			// todo
-			// std::vector<Garde> list_garde = {garde, garde1, garde2, garde3}
-
 			int m = 0;
 			int n = 0;
 
+			//Les objets
 			Objet arme(1, 200, 150);
-
 			Objet money(2, 280, 200);
-
 			Objet cle(3, 700, 200);
 
+			//Le texte
 			TTF_Init();
 			TTF_Font *Sans = TTF_OpenFont("Sans.ttf", 65);
 
@@ -67,12 +66,12 @@ int main(int argc, char *args[])
 				std::cout << "null" << std::endl;
 			}
 
-			SDL_Color White = {255, 255, 255};
+			SDL_Color Color = {0, 0, 0};
 
 			SDL_Rect Message_rect;	  //create a rect
-			Message_rect.x = 500;	  //controls the rect's x coordinate
+			Message_rect.x = 200;	  //controls the rect's x coordinate
 			Message_rect.y = 450;	  // controls the rect's y coordinte
-			Message_rect.w = 500 / 2; // controls the width of the rect
+			Message_rect.w = 700; // controls the width of the rect
 			Message_rect.h = 250 / 4; // controls the height of the rect
 
 			//While application is running
@@ -90,8 +89,8 @@ int main(int argc, char *args[])
 					{
 						n = e.motion.x;
 						m = e.motion.y;
-						////std::cout<<"x"<<n<<std::endl;
-						//std::cout<<"y"<<m<<std::endl;
+						// std::cout<<"x"<<n<<std::endl;
+						// std::cout<<"y"<<m<<std::endl;
 					}
 
 					//Handle input for the joueur
@@ -102,7 +101,7 @@ int main(int argc, char *args[])
 				SDL_SetRenderDrawColor(jeu.gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(jeu.gRenderer);
 
-				std::string s = "Argent restant : " + std::to_string(joueur.getMoney());
+				std::string s = "Argent restant a " + joueur.getNom() + " : " + std::to_string(joueur.getMoney()) + "      Argent restant a " + joueur2.getNom() + " : " + std::to_string(joueur2.getMoney());
 
 				int n = s.length();
 
@@ -113,53 +112,47 @@ int main(int argc, char *args[])
 				// string to char array
 				strcpy(char_array, s.c_str());
 
-				SDL_Surface *surfaceMessage = TTF_RenderText_Solid(Sans, char_array, White);
+				SDL_Surface *surfaceMessage = TTF_RenderText_Solid(Sans, char_array, Color);
 				SDL_Texture *Message = SDL_CreateTextureFromSurface(jeu.gRenderer, surfaceMessage);
 
 				joueur.frameUpdate();
+				joueur2.frameUpdate();
 
-				jeu.jeuUpdate(gTileClips, joueur, garde, garde2, garde3);
-
-				jeu.gPersonnageTexture.render(jeu.gRenderer,joueur2.getMBox().x,joueur2.getMBox().y,&joueur2.clip[joueur2.getFrame()/4][joueur2.getCurrent_clip()]);
-
-
-				joueur2.deplacement(jeu.tileSet);
+				jeu.jeuUpdate(gTileClips, joueur, joueur2, garde, garde2, garde3);
 
 				joueur.deplacement(jeu.tileSet);
+				joueur2.deplacement(jeu.tileSet);
 				garde.deplacement(jeu.tileSet);
 				garde2.deplacement(jeu.tileSet);
 				garde3.deplacement(jeu.tileSet);
 
-				if (((!garde.getMort()) && garde.checkJoueur(joueur.getMBox())) || ((!garde2.getMort()) && garde2.checkJoueur(joueur.getMBox())))
+				// Si on a perdu, le jeu se ferme
+				if (joueur.action(garde) == 0 || joueur.action(garde2) == 0 || joueur.action(garde3) == 0 || joueur2.action(garde) == 0 || joueur2.action(garde2) == 0 || joueur2.action(garde3) == 0)
 				{
-					//std::cout<<"perdu, position garde : "<<garde.getMBox().y<<", position joueur :"<<joueur.getMBox().y<<std::endl;
-					std::cout << "perdu, delta position : " << garde.getMBox().y - joueur.getMBox().y << std::endl;
-					//std::cout<<"perdu"<<std::endl;
+					fin = 1;
+					quit = true;
 				}
 
-				if (joueur.tire == true && garde.checkCollision(joueur.getMBox()))
+				// Ne fonctionne pas dans la methode
+				if (joueur.action(garde) == 1 || joueur2.action(garde) == 1)
 				{
-					std::cout << "poignardé" << std::endl;
 					garde.setMort(true);
 				}
-
-				if (joueur.paye == true && garde.checkCollision(joueur.getMBox()))
+				if (joueur.action(garde2) == 1 || joueur2.action(garde2) == 1)
 				{
-					std::cout << "corrompu" << std::endl;
-					garde.setMort(true);
-					joueur.paye = false;
-				}
-
-				if (joueur.tire == true && garde2.checkCollision(joueur.getMBox()))
-				{
-					std::cout << "poignardé" << std::endl;
 					garde2.setMort(true);
 				}
-
-				if (joueur.paye == true && garde2.checkCollision(joueur.getMBox()))
+				if (joueur.action(garde3) == 1 || joueur2.action(garde3) == 1)
 				{
-					std::cout << "corrompu" << std::endl;
-					garde2.setMort(true);
+					garde3.setMort(true);
+				}
+
+				//Si on a gagne, le jeu se ferme
+				if (joueur.fin(joueur2))
+				{
+					fin = 2;
+					std::cout << "Gagné !!" << std::endl;
+					quit = true;
 				}
 
 				SDL_Rect armeBox = arme.getClip();
@@ -174,9 +167,28 @@ int main(int argc, char *args[])
 				joueur.ramasserObjet(money);
 				joueur.ramasserObjet(cle);
 
+				joueur2.ramasserObjet(arme);
+				joueur2.ramasserObjet(money);
+				joueur2.ramasserObjet(cle);
+
 				SDL_RenderCopy(jeu.gRenderer, Message, NULL, &Message_rect);
 
 				SDL_RenderPresent(jeu.gRenderer);
+			}
+
+			if (fin == 1)
+			{
+				if (!jeu.perdu())
+				{
+					printf("Failed to load media!\n");
+				}
+			}
+			if (fin == 2)
+			{
+				if (!jeu.gagne())
+				{
+					printf("Failed to load media!\n");
+				}
 			}
 
 			//gSpriteSheetTexture.free();

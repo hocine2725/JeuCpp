@@ -6,32 +6,31 @@
 class Objet
 {
 public:
-    bool ramassee;
     //Constructeur
     Objet(int t, int x, int y);
 
     //Destructeur
     // ~Objet();
-    void set()
-    {
-        clip.w = 0;
-        clip.h = 0;
-    }
 
-    // void set(int x, int y)
-    // {
-    //     oBox.x = x;
-    //     oBox.y = y;
-    // }
+    //Pour faire disparaitre l'objet une fois ramasse
+    void set() {clip.w = 0; clip.h = 0;}
+
+	//Getters et setters
+    
     SDL_Rect getBox() { return oBox; }
     SDL_Rect getClip() { return clip; }
     int getX() { return x; }
     int getY() { return y; }
     int getType() { return type; }
 
-    bool getRamasse(){return ramassee;}
+    bool getRamasse() { return ramassee; }
 
-    void setRamasse(bool b){ramassee=b;}
+    void setRamasse(bool b) { ramassee = b; }
+
+
+    // A mettre en protected mais ne fonctionne pas
+    bool ramassee;
+
 protected:
     //Type d'objet
     int type;

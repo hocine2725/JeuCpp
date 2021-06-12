@@ -1,57 +1,56 @@
 #ifndef PERSONNAGE_HPP
 #define PERSONNAGE_HPP
 
-
 #include "Tile.hpp"
 
 #include "Objet.hpp"
 
 class Personnage
 {
-    public:
-		//Les dimensions des Personnage
-		static const int PERSONNAGE_WIDTH = 20;
-		static const int PERSONNAGE_HEIGHT = 30;
-		static const int PERSONNAGE_VEL = 4;
+public:
+	//Les dimensions des Personnage
+	static const int PERSONNAGE_WIDTH = 20;
+	static const int PERSONNAGE_HEIGHT = 30;
+	static const int PERSONNAGE_VEL = 4;
 
-		//Constructeur
-        Personnage();
+	//Constructeur
+	Personnage();
 
-		//Destructeur
-        //~Personnage();
+	//Destructeur
+	//~Personnage();
 
-		//Methode virtuelle pure
-		virtual void deplacement(Tile *tiles[]) = 0;
-        
-		bool checkCollision(SDL_Rect a);
+	//Methode virtuelle pure
+	virtual void deplacement(Tile *tiles[]) = 0;
 
-		bool touchesWall(Tile* tiles[]);
+	//Verifie si il y a une collision entre un personnage et un autre personnage ou un objet
+	bool checkCollision(SDL_Rect a);
 
-		bool ramasserObjet(Objet o);
+	//Empeche le personnage de traverser les murs
+	bool touchesWall(Tile *tiles[]);
 
-		SDL_Rect getMBox(){return mBox;}
-		
-		int getCurrent_clip(){return current_clip;}
+	//Getters et setters
 
-		int getFrame(){return frame;}
+	SDL_Rect getMBox() { return mBox; }
 
-    	void setFrame(int f){frame = f;}
+	int getCurrent_clip() { return current_clip; }
 
+	int getFrame() { return frame; }
 
-    protected:
-		//Position et taille du personnage
-        SDL_Rect mBox;
+	void setFrame(int f) { frame = f; }
 
-		//Vitesse du personnage
-		int mVelX, mVelY;
+protected:
+	//Position et taille du personnage
+	SDL_Rect mBox;
 
-		//Le personnage possede un objet
-		bool objet;
+	//Vitesse du personnage
+	int mVelX, mVelY;
 
-   		int current_clip = 1;
+	//Le personnage possede un objet
+	bool objet;
 
-        int frame;
+	int current_clip = 1;
 
+	int frame;
 };
 
 #endif
