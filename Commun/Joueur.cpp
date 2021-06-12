@@ -16,7 +16,7 @@ Joueur::Joueur(std::string n, int i)
     if (id == 0)
     {
         mBox.x = 200;
-        mBox.y = 150;
+        mBox.y = 200;
     }
     if (id == 1)
     {
@@ -57,7 +57,7 @@ void Joueur::tirer()
         std::cout << "tirer" << std::endl;
         tire = true;
         // on eleve l'arme
-        this->armee=false;
+        this->armee = false;
         // std::cout<<"after: "<<b.getBox().y<<std::endl;
     }
 }
@@ -144,56 +144,61 @@ void Joueur::evenement(SDL_Event &e)
     }
 }
 
-void Joueur::evenement2(SDL_Event& e)
+//Pour faire une IA, modifier le code suivant permettant de régler la vitesse en X et en Y
+void Joueur::evenement2(SDL_Event &e)
 {
- 
-        //std::cout<<"j2 :"<<mVelY<<std::endl;
 
-        switch(e.type){
+    //std::cout<<"j2 :"<<mVelY<<std::endl;
 
-						case SDL_KEYDOWN:
-						key[SDL_GetScancodeFromKey(e.key.keysym.sym)]=1;
-						//std::cout<<"here"<<std::endl;
+    switch (e.type)
+    {
 
-						break;
-						case SDL_KEYUP:
-							key[SDL_GetScancodeFromKey(e.key.keysym.sym)]=0;
-						break;
+    case SDL_KEYDOWN:
+        key[SDL_GetScancodeFromKey(e.key.keysym.sym)] = 1;
+        //std::cout<<"here"<<std::endl;
 
-		}
+        break;
+    case SDL_KEYUP:
+        key[SDL_GetScancodeFromKey(e.key.keysym.sym)] = 0;
+        break;
+    }
 
+    if (key[SDL_SCANCODE_W])
+    {
+        // std::cout<<"Z"<<std::endl;
 
-        if(key[SDL_SCANCODE_W]) {
-       // std::cout<<"Z"<<std::endl;
-  
-            mVelY -= PERSONNAGE_VEL;
-                current_clip = 2;
-                tire=false;
-     
+        mVelY = -PERSONNAGE_VEL;
+        current_clip = 2;
+        tire = false;
+    }
 
-        }
-     
+    else if (key[SDL_SCANCODE_S])
+    {
+        // std::cout<<"S"<<std::endl;
+        mVelY = PERSONNAGE_VEL;
+        current_clip = 0;
+        tire = false;
+    }
+    else if (key[SDL_SCANCODE_D])
+    {
+        // std::cout<<"D"<<std::endl;
+        mVelX = PERSONNAGE_VEL;
+        current_clip = 1;
+        tire = false;
+    }
 
-        else if(key[SDL_SCANCODE_S]) {
-       // std::cout<<"S"<<std::endl;
-        mVelY += PERSONNAGE_VEL;
-                current_clip = 0;
-                tire=false;
-        }
-        else if(key[SDL_SCANCODE_D]) {
-       // std::cout<<"D"<<std::endl;
-        mVelX += PERSONNAGE_VEL; 
-                current_clip = 1;
-                tire=false;
-        }
-
-        else if(key[SDL_SCANCODE_A]) {
+    else if (key[SDL_SCANCODE_A])
+    {
         //std::cout<<"Q"<<std::endl;
-       mVelX -= PERSONNAGE_VEL; 
-                current_clip = 3;
-                tire=false;
-        }
-
+        mVelX = -PERSONNAGE_VEL;
+        current_clip = 3;
+        tire = false;
+    }
+    else
+    {
+        mVelX = 0;
+        mVelY = 0;
+    }
 }
 
 void Joueur::deplacement(Tile *tiles[])
@@ -264,4 +269,32 @@ void Joueur::frameUpdate()
         //std::cout<<"zero"<<std::endl;
         this->setFrame(0);
     }
+}
+
+int Joueur::action(Garde garde)
+{
+    if (((!garde.getMort()) && garde.checkJoueur(this->getMBox())))
+    {
+        //std::cout<<"perdu, position garde : "<<garde.getMBox().y<<", position joueur :"<<joueur.getMBox().y<<std::endl;
+        std::cout << "perdu, delta position : " << garde.getMBox().y - this->getMBox().y << std::endl;
+        //std::cout<<"perdu"<<std::endl;
+        return 0;
+    }
+
+    if (this->tire == true && garde.checkCollision(this->getMBox()))
+    {
+        std::cout << "poignardé" << std::endl;
+        garde.setMort(true);
+        return 1;
+    }
+
+    if (this->paye == true && garde.checkCollision(this->getMBox()))
+    {
+        std::cout << "corrompu" << std::endl;
+        garde.setMort(true);
+        this->paye = false;
+        return 1;
+    }
+
+    return 2;
 }

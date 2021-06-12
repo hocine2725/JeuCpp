@@ -312,7 +312,6 @@ int Joueur::action(Garde garde)
     {
         std::cout << "corrompu" << std::endl;
         garde.setMort(true); // Ne fonctionne pas, on le fait donc dans exec.cpp
-        this->paye = false;
         return 1;
     }
 

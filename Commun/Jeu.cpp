@@ -277,7 +277,7 @@ bool Jeu::setTiles(Tile *tiles[], SDL_Rect *gTileClips)
 	return tilesLoaded;
 }
 
-void Jeu::jeuUpdate(SDL_Rect *gTileClips, Joueur joueur, Garde garde, Garde garde2, Garde garde3)
+void Jeu::jeuUpdate(SDL_Rect *gTileClips, Joueur joueur, Joueur joueur2, Garde garde, Garde garde2, Garde garde3)
 {
 	for (int i = 0; i < TOTAL_TILES; ++i)
 	{
@@ -287,6 +287,7 @@ void Jeu::jeuUpdate(SDL_Rect *gTileClips, Joueur joueur, Garde garde, Garde gard
 	}
 
 	this->gPersonnageTexture.render(this->gRenderer, joueur.getMBox().x, joueur.getMBox().y, &joueur.clip[joueur.getFrame() / 4][joueur.getCurrent_clip()]);
+	this->gPersonnageTexture.render(this->gRenderer, joueur2.getMBox().x, joueur2.getMBox().y, &joueur2.clip[joueur2.getFrame() / 4][joueur2.getCurrent_clip()]);
 
 	this->gGardeTexture.render(this->gRenderer, garde.getMBox().x, garde.getMBox().y, &garde.clip[garde.getFrame() / 4][garde.getCurrent_clip()]);
 	this->gGardeTexture.render(this->gRenderer, garde2.getMBox().x, garde2.getMBox().y, &garde2.clip[garde2.getFrame() / 4][garde2.getCurrent_clip()]);

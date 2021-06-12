@@ -4,6 +4,7 @@
 #include <list>
 
 #include "Personnage.hpp"
+#include "Garde.hpp"
 
 #include <vector>
 using std::vector;
@@ -23,7 +24,7 @@ public:
 
 	//Prends les entrees calvier
 	void evenement(SDL_Event &e);
-	void evenement2(SDL_Event& e);
+	void evenement2(SDL_Event &e);
 
 	void deplacement(Tile *tiles[]);
 
@@ -34,12 +35,11 @@ public:
 	void frameUpdate();
 
 	void corruption();
-	int getMoney()
-	{
-		return money;
-	}
+	int getMoney(){return money;}
 
 	void tirer();
+
+	int action(Garde garde);
 
 	//SDL_Rect** getClip(){return clip;} //todo : mettre en protected
 	SDL_Rect clip[4][4];
@@ -47,7 +47,7 @@ public:
 protected:
 	//Nom du joueur
 	std::string nom;
-	    char key[512];
+	char key[512];
 	bool armee;
 
 	int money;

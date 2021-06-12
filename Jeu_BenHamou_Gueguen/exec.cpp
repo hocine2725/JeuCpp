@@ -136,14 +136,17 @@ int main(int argc, char *args[])
 				// Ne fonctionne pas dans la methode
 				if (joueur.action(garde) == 1 || joueur2.action(garde) == 1)
 				{
+					std::cout << "Garde mort" << std::endl;
 					garde.setMort(true);
 				}
 				if (joueur.action(garde2) == 1 || joueur2.action(garde2) == 1)
 				{
+					std::cout << "Garde2 mort" << std::endl;
 					garde2.setMort(true);
 				}
 				if (joueur.action(garde3) == 1 || joueur2.action(garde3) == 1)
 				{
+					std::cout << "Garde3 mort" << std::endl;
 					garde3.setMort(true);
 				}
 

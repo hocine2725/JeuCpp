@@ -301,9 +301,9 @@ bool Jeu::accueil()
 	int w, h; // texture width & height
 
 	img = IMG_LoadTexture(gRenderer, "menu.png");
-	if (img)
+	if (!img)
 	{
-		std::cout << "ok" << std::endl;
+		return false;
 	}
 	SDL_QueryTexture(img, NULL, NULL, &w, &h);
 

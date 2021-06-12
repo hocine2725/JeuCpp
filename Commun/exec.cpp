@@ -90,8 +90,8 @@ int main(int argc, char *args[])
 					{
 						n = e.motion.x;
 						m = e.motion.y;
-						////std::cout<<"x"<<n<<std::endl;
-						//std::cout<<"y"<<m<<std::endl;
+						std::cout<<"x"<<n<<std::endl;
+						std::cout<<"y"<<m<<std::endl;
 					}
 
 					//Handle input for the joueur
@@ -117,50 +117,35 @@ int main(int argc, char *args[])
 				SDL_Texture *Message = SDL_CreateTextureFromSurface(jeu.gRenderer, surfaceMessage);
 
 				joueur.frameUpdate();
+				joueur2.frameUpdate();
 
-				jeu.jeuUpdate(gTileClips, joueur, garde, garde2, garde3);
+				jeu.jeuUpdate(gTileClips, joueur, joueur2, garde, garde2, garde3);
 
-				jeu.gPersonnageTexture.render(jeu.gRenderer,joueur2.getMBox().x,joueur2.getMBox().y,&joueur2.clip[joueur2.getFrame()/4][joueur2.getCurrent_clip()]);
-
-
-				joueur2.deplacement(jeu.tileSet);
 
 				joueur.deplacement(jeu.tileSet);
+				joueur2.deplacement(jeu.tileSet);
 				garde.deplacement(jeu.tileSet);
 				garde2.deplacement(jeu.tileSet);
 				garde3.deplacement(jeu.tileSet);
 
-				if (((!garde.getMort()) && garde.checkJoueur(joueur.getMBox())) || ((!garde2.getMort()) && garde2.checkJoueur(joueur.getMBox())))
-				{
-					//std::cout<<"perdu, position garde : "<<garde.getMBox().y<<", position joueur :"<<joueur.getMBox().y<<std::endl;
-					std::cout << "perdu, delta position : " << garde.getMBox().y - joueur.getMBox().y << std::endl;
-					//std::cout<<"perdu"<<std::endl;
-				}
+				joueur.action(garde);
+				joueur.action(garde2);
+				joueur.action(garde3);
+				joueur2.action(garde);
+				joueur2.action(garde2);
+				joueur2.action(garde3);
 
-				if (joueur.tire == true && garde.checkCollision(joueur.getMBox()))
-				{
-					std::cout << "poignardé" << std::endl;
-					garde.setMort(true);
-				}
-
-				if (joueur.paye == true && garde.checkCollision(joueur.getMBox()))
-				{
-					std::cout << "corrompu" << std::endl;
-					garde.setMort(true);
-					joueur.paye = false;
-				}
-
-				if (joueur.tire == true && garde2.checkCollision(joueur.getMBox()))
-				{
-					std::cout << "poignardé" << std::endl;
-					garde2.setMort(true);
-				}
-
-				if (joueur.paye == true && garde2.checkCollision(joueur.getMBox()))
-				{
-					std::cout << "corrompu" << std::endl;
-					garde2.setMort(true);
-				}
+				// Si on a perdu, le jeu se ferme
+				// if (joueur.action(garde) == 0) {quit = true;}
+				// if (joueur.action(garde2) == 0) {quit = true;}
+				// if (joueur.action(garde3) == 0) {quit = true;}
+				// if (joueur2.action(garde) == 0) {quit = true;}
+				// if (joueur2.action(garde2) == 0) {quit = true;}
+				// if (joueur2.action(garde3) == 0) {quit = true;}
+				
+				// if(joueur.fin() && joueur2.fin()){
+					std::cout << joueur.getMBox().x << std::endl;
+				// }
 
 				SDL_Rect armeBox = arme.getClip();
 				SDL_Rect MoneyBox = money.getClip();
@@ -173,6 +158,10 @@ int main(int argc, char *args[])
 				joueur.ramasserObjet(arme);
 				joueur.ramasserObjet(money);
 				joueur.ramasserObjet(cle);
+
+				joueur2.ramasserObjet(arme);
+				joueur2.ramasserObjet(money);
+				joueur2.ramasserObjet(cle);
 
 				SDL_RenderCopy(jeu.gRenderer, Message, NULL, &Message_rect);
 
